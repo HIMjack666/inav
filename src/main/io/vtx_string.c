@@ -33,6 +33,10 @@
 #define VTX_STRING_1G3_CHAN_COUNT  8
 #define VTX_STRING_1G3_POWER_COUNT 3
 
+#define VTX_STRING_3G3_BAND_COUNT  2
+#define VTX_STRING_3G3_CHAN_COUNT  8
+#define VTX_STRING_3G3_POWER_COUNT 3
+
 const uint16_t vtx58frequencyTable[VTX_STRING_5G8_BAND_COUNT][VTX_STRING_5G8_CHAN_COUNT] =
 {
     { 5865, 5845, 5825, 5805, 5785, 5765, 5745, 5725 }, // A
@@ -83,6 +87,32 @@ const char * const vtx1G3DefaultPowerNames[VTX_STRING_1G3_POWER_COUNT + 1] = {
     "---", "PL1", "PL2", "PL3"
 };
 
+// 3G3
+
+const uint16_t vtx3G3frequencyTable[VTX_STRING_3G3_BAND_COUNT][VTX_STRING_3G3_CHAN_COUNT] =
+{
+    { 3320, 3345, 3370, 3395, 3420, 3445, 3470, 3495 }, // A
+    { 3310, 3330, 3355, 3380, 3405, 3430, 3455, 3480 }, // B
+};
+
+const char * const vtx3G3BandNames[VTX_STRING_3G3_BAND_COUNT + 1] = {
+    "-",
+    "A",
+    "B",
+};
+
+const char vtx3G3BandLetter[VTX_STRING_3G3_BAND_COUNT + 1] = "-AB";
+
+const char * const vtx3G3ChannelNames[VTX_STRING_3G3_CHAN_COUNT + 1] = {
+    "-", "1", "2", "3", "4", "5", "6", "7", "8",
+};
+
+const char * const vtx3G3DefaultPowerNames[VTX_STRING_3G3_POWER_COUNT + 1] = {
+    "---", "25", "200", "MAX"
+};
+
+// end 3G3 
+
 bool vtx58_Freq2Bandchan(uint16_t freq, uint8_t *pBand, uint8_t *pChannel)
 {
     int8_t band;
@@ -131,3 +161,13 @@ uint16_t vtx1G3_Bandchan2Freq(uint8_t band, uint8_t channel)
     }
     return 0;
 }
+
+uint16_t vtx3G3_Bandchan2Freq(uint8_t band, uint8_t channel)
+{
+    if (band > 0 && band <= VTX_STRING_3G3_BAND_COUNT &&
+                          channel > 0 && channel <= VTX_STRING_3G3_CHAN_COUNT) {
+        return vtx3G3frequencyTable[band - 1][channel - 1];
+    }
+    return 0;
+}
+

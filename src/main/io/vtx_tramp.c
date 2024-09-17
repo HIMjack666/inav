@@ -578,6 +578,12 @@ const char * const trampPowerNames_1G3_800[VTX_TRAMP_1G3_MAX_POWER_COUNT + 1] = 
 const uint16_t trampPowerTable_1G3_2000[VTX_TRAMP_1G3_MAX_POWER_COUNT]         = { 25, 200, 2000 };
 const char * const trampPowerNames_1G3_2000[VTX_TRAMP_1G3_MAX_POWER_COUNT + 1] = { "---", "25 ", "200", "2000" };
 
+const uint16_t trampPowerTable_3G3_4000[VTX_TRAMP_3G3_MAX_POWER_COUNT]         = { 25, 200, 4000 };
+const char * const trampPowerNames_3G3_4000[VTX_TRAMP_3G3_MAX_POWER_COUNT + 1] = { "---", "25 ", "200", "4W" };
+
+const uint16_t trampPowerTable_3G3_800[VTX_TRAMP_3G3_MAX_POWER_COUNT]         = { 25, 200, 800 };
+const char * const trampPowerNames_3G3_800[VTX_TRAMP_3G3_MAX_POWER_COUNT + 1] = { "---", "25 ", "200", "800" };
+
 static void vtxProtoUpdatePowerMetadata(uint16_t maxPower)
 {
     switch (vtxSettingsConfig()->frequencyGroup) {
@@ -600,6 +606,26 @@ static void vtxProtoUpdatePowerMetadata(uint16_t maxPower)
             impl_vtxDevice.capability.channelCount = VTX_TRAMP_1G3_CHANNEL_COUNT;
             impl_vtxDevice.capability.bandNames = (char **)vtx1G3BandNames;
             impl_vtxDevice.capability.channelNames = (char **)vtx1G3ChannelNames;
+            break;
+        case FREQUENCYGROUP_3G3:
+            if (maxPower >= 4000) {
+               vtxState.metadata.powerTablePtr  = trampPowerTable_3G3_4000;
+               vtxState.metadata.powerTableCount = VTX_TRAMP_3G3_MAX_POWER_COUNT;
+            
+               impl_vtxDevice.capability.powerNames = (char **)trampPowerNames_3G3_4000;
+               impl_vtxDevice.capability.powerCount = VTX_TRAMP_3G3_MAX_POWER_COUNT;
+            }
+            else {
+               vtxState.metadata.powerTablePtr  = trampPowerTable_3G3_800;
+               vtxState.metadata.powerTableCount = VTX_TRAMP_3G3_MAX_POWER_COUNT;
+            
+               impl_vtxDevice.capability.powerNames = (char **)trampPowerNames_3G3_800;
+               impl_vtxDevice.capability.powerCount = VTX_TRAMP_3G3_MAX_POWER_COUNT;
+            }
+            impl_vtxDevice.capability.bandCount = VTX_TRAMP_3G3_BAND_COUNT;
+            impl_vtxDevice.capability.channelCount = VTX_TRAMP_3G3_CHANNEL_COUNT;
+            impl_vtxDevice.capability.bandNames = (char **)vtx3G3BandNames;
+            impl_vtxDevice.capability.channelNames = (char **)vtx3G3ChannelNames;
             break;
         default:
             if (maxPower >= 800) {
